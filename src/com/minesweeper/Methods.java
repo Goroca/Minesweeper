@@ -80,9 +80,10 @@ public class Methods {
 
 	}
 
-	public static void revelateBox(int row, char column) {
-		int intColumn = (int) column - CHAR_OFFSET;
-		board[row - 1][intColumn].setHidden(false);
+	public static void revelateBox(char row, char column) {
+		int intRow = Integer.parseInt(String.valueOf(row));
+		int intColumn = (int) (column - CHAR_OFFSET);
+		board[intRow - 1][intColumn].setHidden(false);
 	}
 
 }

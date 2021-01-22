@@ -8,7 +8,7 @@ public class Mine {
 
 	public Mine() {
 		// TODO Auto-generated constructor stub
-		active = true;
+		active = false;
 		around = 0;
 		targeted = false;
 		hidden = true;
