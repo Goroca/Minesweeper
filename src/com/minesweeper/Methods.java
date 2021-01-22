@@ -4,6 +4,8 @@ import java.util.Random;
 
 public class Methods {
 	public static Mine[][] board;
+	public static boolean[][] checked;
+
 	private final static int CHAR_OFFSET = 65;
 
 	/**
@@ -55,6 +57,24 @@ public class Methods {
 					if (board[i][j + 1].isActive())
 						totalAround++;
 				}
+
+				if (i > 0 && j > 0) {
+					if (board[i - 1][j - 1].isActive())
+						totalAround++;
+				}
+				if (i < (board.length - 1) && j > 0) {
+					if (board[i + 1][j - 1].isActive())
+						totalAround++;
+				}
+				if (i < (board.length - 1) && j < (board[i].length - 1)) {
+					if (board[i + 1][j + 1].isActive())
+						totalAround++;
+				}
+				if (i > 0 && j < (board[i].length - 1)) {
+					if (board[i - 1][j + 1].isActive())
+						totalAround++;
+				}
+
 				board[i][j].setAround(totalAround);
 			}
 		}
@@ -73,7 +93,7 @@ public class Methods {
 			System.out.println(']');
 		}
 		String column = "     ";
-		for (int i = 0; i < board.length; i++) {
+		for (int i = 0; i < board[0].length; i++) {
 			column = column + (char) (CHAR_OFFSET + i) + ' ';
 		}
 		System.out.println(column);
@@ -81,9 +101,41 @@ public class Methods {
 	}
 
 	public static void revelateBox(char row, char column) {
-		int intRow = Integer.parseInt(String.valueOf(row));
+		int intRow = Integer.parseInt(String.valueOf(row)) - 1;
 		int intColumn = (int) (column - CHAR_OFFSET);
-		board[intRow - 1][intColumn].setHidden(false);
+
+		if (board[intRow][intColumn].getAround() == 0) {
+			checked = new boolean[board.length][board[0].length];
+			checked[intRow][intColumn] = true;
+			concadenateRevelateBox(intRow, intColumn);
+
+		}
+
+	}
+
+	private static void concadenateRevelateBox(int i, int j) {
+		board[i][j].setHidden(false);
+		if (board[i][j].getAround() == 0) {
+
+			checked[i][j] = true;
+			if (i > 0) {
+				board[i - 1][j].setHidden(false);
+				if (checked[i - 1][j] == false)
+					concadenateRevelateBox(i - 1, j);
+			}
+			if (j > 0) {
+				if (checked[i][j - 1] == false)
+					concadenateRevelateBox(i, j - 1);
+			}
+			if (i < (board.length - 1)) {
+				if (checked[i + 1][j] == false)
+					concadenateRevelateBox(i + 1, j);
+			}
+			if (j < (board[i].length - 1)) {
+				if (checked[i][j + 1] == false)
+					concadenateRevelateBox(i, j + 1);
+			}
+		}
 	}
 
 }

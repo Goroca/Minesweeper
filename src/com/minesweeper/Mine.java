@@ -24,6 +24,8 @@ public class Mine {
 			s = "B";
 		} else {
 			s = Integer.toString(around);
+			if (around == 0)
+				s = " ";
 		}
 		return s;
 	}
