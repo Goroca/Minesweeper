@@ -1,24 +1,26 @@
 package com.minesweeper;
 
 public class Mine {
+	public enum Status {
+		TARGETED, HIDDEN, UNHIDDEN;
+	}
+
 	private boolean active;
 	private int around;
-	private boolean targeted;
-	private boolean hidden;
+	private Status status;
 
 	public Mine() {
 		// TODO Auto-generated constructor stub
 		active = false;
 		around = 0;
-		targeted = false;
-		hidden = true;
+		status = Status.HIDDEN;
 	}
 
 	public String showMine() {
 		String s = "";
-		if (targeted)
+		if (Status.TARGETED.equals(status))
 			s = "T";
-		else if (hidden) {
+		else if (Status.HIDDEN.equals(status)) {
 			s = "X";
 		} else if (active) {
 			s = "B";
@@ -46,20 +48,12 @@ public class Mine {
 		this.around = around;
 	}
 
-	public boolean isTargeted() {
-		return targeted;
+	public Status getStatus() {
+		return status;
 	}
 
-	public void setTargeted(boolean targeted) {
-		this.targeted = targeted;
-	}
-
-	public boolean isHidden() {
-		return hidden;
-	}
-
-	public void setHidden(boolean hidden) {
-		this.hidden = hidden;
+	public void setStatus(Status status) {
+		this.status = status;
 	}
 
 }

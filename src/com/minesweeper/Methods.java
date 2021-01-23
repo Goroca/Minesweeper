@@ -4,6 +4,7 @@ import java.util.Random;
 
 public class Methods {
 	public static Mine[][] board;
+	private static int activeMines;
 	public static boolean[][] checked;
 
 	private final static int CHAR_OFFSET = 65;
@@ -29,8 +30,8 @@ public class Methods {
 
 	public static void setMines(int dim, int totalMines) {
 		int setMines = 0;
-
-		while (setMines <= totalMines) {
+		activeMines = totalMines;
+		while (setMines < totalMines) {
 			int random1 = new Random().nextInt(dim);
 			int random2 = new Random().nextInt(dim);
 			board[random1][random2].setActive(true);
@@ -105,7 +106,7 @@ public class Methods {
 		int intRow = Integer.parseInt(String.valueOf(row)) - 1;
 		try {
 			int intColumn = (int) (column - CHAR_OFFSET);
-			board[intRow][intColumn].setHidden(false);
+			board[intRow][intColumn].setStatus(Mine.Status.UNHIDDEN);
 			if (board[intRow][intColumn].isActive()) {
 				showBoard();
 				System.out.println("GAME OVER");
@@ -120,7 +121,7 @@ public class Methods {
 		} catch (java.lang.ArrayIndexOutOfBoundsException e) {
 			// TODO: handle exception
 			int intColumn = (int) (column - CHAR_OFFSET_2);
-			board[intRow][intColumn].setHidden(false);
+			board[intRow][intColumn].setStatus(Mine.Status.UNHIDDEN);
 			if (board[intRow][intColumn].isActive()) {
 				showBoard();
 				System.out.println("GAME OVER");
@@ -137,7 +138,7 @@ public class Methods {
 	}
 
 	private static void concadenateRevelateBox(int i, int j) {
-		board[i][j].setHidden(false);
+		board[i][j].setStatus(Mine.Status.UNHIDDEN);
 		if (board[i][j].getAround() == 0) {
 
 			checked[i][j] = true;
@@ -181,14 +182,29 @@ public class Methods {
 		int intRow = Integer.parseInt(String.valueOf(row)) - 1;
 		try {
 			int intColumn = (int) (column - CHAR_OFFSET);
-			board[intRow][intColumn].setTargeted(true);
+			board[intRow][intColumn].setStatus(Mine.Status.TARGETED);
 
 		} catch (java.lang.ArrayIndexOutOfBoundsException e) {
 			// TODO: handle exception
 			int intColumn = (int) (column - CHAR_OFFSET_2);
-			board[intRow][intColumn].setTargeted(true);
+			board[intRow][intColumn].setStatus(Mine.Status.TARGETED);
 
 		}
+	}
+
+	public static boolean checkFinish() {
+		int detectedMines = 0;
+		for (Mine[] mines : board) {
+			for (Mine mine : mines) {
+				if (mine.isActive() && mine.getStatus().equals(Mine.Status.TARGETED))
+					detectedMines++;
+			}
+		}
+		if (detectedMines == activeMines) {
+			System.out.println("YOU WIN, GG");
+			return true;
+		}
+		return false;
 	}
 
 }

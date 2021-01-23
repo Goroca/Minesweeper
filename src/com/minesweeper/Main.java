@@ -8,17 +8,17 @@ public class Main extends Methods {
 		// TODO Auto-generated method stub
 
 		// STANDAR : 8 x 8 casillas y 10 minas.
-		startBoard(8, 10);
+		startBoard(8, 3);
 		showBoard();
 
 		BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
 
 		System.out.println("Select ROW and COLOMN");
 		String text = in.readLine();
-		while(!revelateBox(text.charAt(0), text.charAt(1))) {
+		while (!revelateBox(text.charAt(0), text.charAt(1)) && !checkFinish()) {
 			showBoard();
 			text = in.readLine();
-			while (text.length()>2 && (text.charAt(0) == 'T' || text.charAt(0) == 't')) {
+			while (text.length() > 2 && (text.charAt(0) == 'T' || text.charAt(0) == 't') && !checkFinish()) {
 				targetBox(text.charAt(1), text.charAt(2));
 				showBoard();
 				text = in.readLine();
@@ -26,7 +26,5 @@ public class Main extends Methods {
 		}
 
 	}
-
-
 
 }
