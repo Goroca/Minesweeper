@@ -15,8 +15,10 @@ public class Main extends Methods {
 
 		System.out.println("Select ROW and COLOMN");
 		String text = in.readLine();
-		revelateBox(text.charAt(0), text.charAt(1));
-		showBoard();
+		while(!revelateBox(text.charAt(0), text.charAt(1))) {
+			showBoard();
+			text = in.readLine();
+		}
 
 	}
 

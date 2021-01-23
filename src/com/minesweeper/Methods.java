@@ -7,6 +7,8 @@ public class Methods {
 	public static boolean[][] checked;
 
 	private final static int CHAR_OFFSET = 65;
+	private final static int CHAR_OFFSET_2 = 97;
+
 
 	/**
 	 * @param dim
@@ -100,17 +102,39 @@ public class Methods {
 
 	}
 
-	public static void revelateBox(char row, char column) {
+	public static boolean revelateBox(char row, char column) {
 		int intRow = Integer.parseInt(String.valueOf(row)) - 1;
-		int intColumn = (int) (column - CHAR_OFFSET);
+		try {
+			int intColumn = (int) (column - CHAR_OFFSET);
+			board[intRow][intColumn].setHidden(false);
+			if (board[intRow][intColumn].isActive()) {
+				showBoard();
+				System.out.println("GAME OVER");
+				return true;
+			}
+			if (board[intRow][intColumn].getAround() == 0) {
+				checked = new boolean[board.length][board[0].length];
+				checked[intRow][intColumn] = true;
+				concadenateRevelateBox(intRow, intColumn);
 
-		if (board[intRow][intColumn].getAround() == 0) {
-			checked = new boolean[board.length][board[0].length];
-			checked[intRow][intColumn] = true;
-			concadenateRevelateBox(intRow, intColumn);
+			}
+		} catch (java.lang.ArrayIndexOutOfBoundsException e) {
+			// TODO: handle exception
+			int intColumn = (int) (column - CHAR_OFFSET_2);
+			board[intRow][intColumn].setHidden(false);
+			if (board[intRow][intColumn].isActive()) {
+				showBoard();
+				System.out.println("GAME OVER");
+				return true;
+			}
+			if (board[intRow][intColumn].getAround() == 0) {
+				checked = new boolean[board.length][board[0].length];
+				checked[intRow][intColumn] = true;
+				concadenateRevelateBox(intRow, intColumn);
 
+			}
 		}
-
+		return false;
 	}
 
 	private static void concadenateRevelateBox(int i, int j) {
@@ -119,21 +143,37 @@ public class Methods {
 
 			checked[i][j] = true;
 			if (i > 0) {
-				board[i - 1][j].setHidden(false);
-				if (checked[i - 1][j] == false)
+				if (!checked[i - 1][j])
 					concadenateRevelateBox(i - 1, j);
 			}
 			if (j > 0) {
-				if (checked[i][j - 1] == false)
+				if (!checked[i][j - 1])
 					concadenateRevelateBox(i, j - 1);
 			}
 			if (i < (board.length - 1)) {
-				if (checked[i + 1][j] == false)
+				if (!checked[i + 1][j])
 					concadenateRevelateBox(i + 1, j);
 			}
 			if (j < (board[i].length - 1)) {
-				if (checked[i][j + 1] == false)
+				if (!checked[i][j + 1])
 					concadenateRevelateBox(i, j + 1);
+			}
+
+			if (i > 0 && j > 0) {
+				if (!checked[i - 1][j - 1])
+					concadenateRevelateBox(i - 1, j - 1);
+			}
+			if (i < (board.length - 1) && j > 0) {
+				if (!checked[i + 1][j - 1])
+					concadenateRevelateBox(i + 1, j - 1);
+			}
+			if (i < (board.length - 1) && j < (board[i].length - 1)) {
+				if (!checked[i + 1][j + 1])
+					concadenateRevelateBox(i + 1, j + 1);
+			}
+			if (i > 0 && j < (board[i].length - 1)) {
+				if (!checked[i - 1][j + 1])
+					concadenateRevelateBox(i - 1, j + 1);
 			}
 		}
 	}
