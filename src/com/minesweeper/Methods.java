@@ -5,6 +5,7 @@ import java.util.Random;
 public class Methods {
 	public static Mine[][] board;
 	private static int activeMines;
+	private static int totalBoxes;
 	public static boolean[][] checked;
 
 	private final static int CHAR_OFFSET = 65;
@@ -16,7 +17,8 @@ public class Methods {
 	 */
 	public static void startBoard(int dim, int totalMines) {
 		board = new Mine[dim][dim];
-		int totalBoxes = dim * dim;
+		totalBoxes = dim * dim;
+		activeMines = totalMines;
 
 		for (int i = 0; i < board.length; i++) {
 			for (int j = 0; j < board[i].length; j++) {
@@ -24,18 +26,20 @@ public class Methods {
 				board[i][j] = aux;
 			}
 		}
-		setMines(dim, totalMines);
+		setMines(dim);
 		setAround();
 	}
 
-	public static void setMines(int dim, int totalMines) {
+	public static void setMines(int dim) {
 		int setMines = 0;
-		activeMines = totalMines;
-		while (setMines < totalMines) {
+		while (setMines < activeMines) {
 			int random1 = new Random().nextInt(dim);
 			int random2 = new Random().nextInt(dim);
-			board[random1][random2].setActive(true);
-			setMines++;
+			if (!board[random1][random2].isActive()) {
+				board[random1][random2].setActive(true);
+				setMines++;
+			}
+
 		}
 
 	}
@@ -195,16 +199,19 @@ public class Methods {
 
 	public static boolean checkFinish() {
 		int detectedMines = 0;
+		int unhiddenBoxes = 1;
 		for (Mine[] mines : board) {
 			for (Mine mine : mines) {
 				if (mine.isActive() && mine.getStatus().equals(Mine.Status.TARGETED))
 					detectedMines++;
+				if (mine.getStatus().equals(Mine.Status.UNHIDDEN))
+					unhiddenBoxes++;
 			}
 		}
-		if (detectedMines == activeMines) {
+		if (detectedMines == activeMines && unhiddenBoxes == totalBoxes - activeMines) {
 			System.out.println("YOU WIN, GG");
 			return true;
-		}
+		}		
 		return false;
 	}
 
