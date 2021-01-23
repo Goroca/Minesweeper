@@ -9,7 +9,6 @@ public class Methods {
 	private final static int CHAR_OFFSET = 65;
 	private final static int CHAR_OFFSET_2 = 97;
 
-
 	/**
 	 * @param dim
 	 * @param totalMines
@@ -175,6 +174,20 @@ public class Methods {
 				if (!checked[i - 1][j + 1])
 					concadenateRevelateBox(i - 1, j + 1);
 			}
+		}
+	}
+
+	public static void targetBox(char row, char column) {
+		int intRow = Integer.parseInt(String.valueOf(row)) - 1;
+		try {
+			int intColumn = (int) (column - CHAR_OFFSET);
+			board[intRow][intColumn].setTargeted(true);
+
+		} catch (java.lang.ArrayIndexOutOfBoundsException e) {
+			// TODO: handle exception
+			int intColumn = (int) (column - CHAR_OFFSET_2);
+			board[intRow][intColumn].setTargeted(true);
+
 		}
 	}
 
