@@ -15,12 +15,14 @@ public class Main extends Methods {
 
 		System.out.println("Select ROW and COLOMN");
 		String text = in.readLine();
-		while (!revelateBox(text.charAt(0), text.charAt(1)) && !checkFinish()) {
+		while (!revelateBox(text.charAt(0), text.charAt(1))) {
 			showBoard();
 			text = in.readLine();
-			while (text.length() > 2 && (text.charAt(0) == 'T' || text.charAt(0) == 't') && !checkFinish()) {
+			while (text.length() > 2 && (text.charAt(0) == 'T' || text.charAt(0) == 't')) {
 				targetBox(text.charAt(1), text.charAt(2));
 				showBoard();
+				if (checkFinish())
+					return;
 				text = in.readLine();
 			}
 		}

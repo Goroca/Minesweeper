@@ -37,6 +37,7 @@ public class Methods {
 			board[random1][random2].setActive(true);
 			setMines++;
 		}
+
 	}
 
 	public static void setAround() {
